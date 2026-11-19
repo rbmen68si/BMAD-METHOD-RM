@@ -80,6 +80,30 @@ Permetti a Roberto di modificare entrambe le date, se lo desidera.
 
 Dopo la conferma, assicurati che **Dal** sia sempre minore o uguale a **Al** e utilizza esclusivamente le date confermate da Roberto per tutte le successive operazioni.
 
+## Esecuzione rapida con gli script
+
+Per le fasi meccaniche usa gli script della skill, già collaudati, invece di ripercorrere a mano ogni passo. Calcola una sola volta `[Data corrente]` (`yyyyMMddHHmmss`) e usa `{workdir}` per la cartella di lavoro (predefinita `%USERPROFILE%\Documents\MyTime-export`).
+
+1. Scarico (passi 2-5 e 7-8). Avvia Chrome con profilo dedicato, apre direttamente `https://mytime.dedagroup.it/monitoring` (l'SSO si completa da solo) e salva `downloads\risorse-raw.xls` e `downloads\wbs-raw.xls`:
+
+   ```text
+   uv run {skill-root}/scripts/mytime_export.py --dal <dd/mm/yyyy> --al <dd/mm/yyyy> --out {workdir}
+   ```
+
+2. Conversione e consolidamento (passi 6 e 9-12). Converte i due `.xls`, crea il consolidato con `TabRisorse`, `TabWbs`, `QueryNormalizzazione` e il foglio `Consuntivazione` in prima posizione, con i nomi finali del passo 6, e stampa percorso e conteggi per il riepilogo:
+
+   ```text
+   uv run {skill-root}/scripts/consolidate.py --dal <dd/mm/yyyy> --al <dd/mm/yyyy> --out {workdir} --stamp <Data corrente>
+   ```
+
+Se uno script fallisce, esegui a mano i passi descritti sotto per quella fase. Note utili:
+
+- Chrome usa la porta di debug `9333`: la `9222` è spesso occupata da Edge. Per cambiarla usa `--port`.
+- Il lancio di Chrome termina subito ma il processo resta attivo.
+- Il form di MyTime ha `select[name=mode]` (`rusr` per Risorse, `rwbs` per WBS), `select[name=view]` (`daily`), `input[name=when]`, `input[name=whento]` e il pulsante `button[name=btnExport]`.
+- Il file scaricato è HTML con estensione `.xls`: si apre solo con Excel desktop (COM).
+- Se l'accesso diretto a `/monitoring` non funziona, segui la navigazione del passo 2. Il click sul pulsante Mytime apre una nuova scheda: per rilevarla conta le pagine del browser, il solo polling degli URL può non vederla.
+
 ### 2. Accesso a MyDeda
 
 Accedi al sito:
@@ -284,7 +308,7 @@ Il riepilogo deve indicare almeno:
 
 ### 14. Fine operazione
 
-Chiudi il browser che hai avviato e rimuovi il profilo dedicato e gli script temporanei, lasciando solo i file Excel e i `.xls` originali.
+Chiudi il browser che hai avviato (termina il processo Chrome principale che ha `MyTime-export` nella riga di comando, con `Stop-Process -Id`) e rimuovi il profilo dedicato `chrome-profile`, lasciando solo i file Excel e i `.xls` originali.
 
 Dopo aver fornito il riepilogo, l'operazione è completata.
 
