@@ -143,14 +143,14 @@ monitoring-export-risorse-[Dal]--[Al]--[Data corrente].xlsx
 
 Sostituisci i segnaposto:
 
-- `[Dal]` con la data di inizio confermata, nel formato `yyyy-mm-dd`
-- `[Al]` con la data di fine confermata, nel formato `yyyy-mm-dd`
-- `[Data corrente]` con la data del giorno di esecuzione, nel formato `yyyy-mm-dd`
+- `[Dal]` con la data di inizio confermata, nel formato `yyyyMMdd`
+- `[Al]` con la data di fine confermata, nel formato `yyyyMMdd`
+- `[Data corrente]` con data e ora del giorno di esecuzione, nel formato `yyyyMMddHHmmss`, calcolate una sola volta e usate in tutti e tre i file
 
-Esempio, per il periodo dal 1° gennaio 2026 al 31 dicembre 2026, eseguito il 19 novembre 2026:
+Esempio, per il periodo dal 1° gennaio 2026 al 31 dicembre 2026, eseguito il 19 novembre 2026 alle 20:57:21:
 
 ```text
-monitoring-export-risorse-2026-01-01--2026-12-31--2026-11-19.xlsx
+monitoring-export-risorse-20260101--20261231--20261119205721.xlsx
 ```
 
 ## Scarico delle WBS
@@ -192,7 +192,7 @@ Sostituisci i segnaposto come al passo 6.
 Esempio, per il periodo dal 1° gennaio 2026 al 31 dicembre 2026, eseguito il 19 novembre 2026:
 
 ```text
-monitoring-export-wbs-2026-01-01--2026-12-31--2026-11-19.xlsx
+monitoring-export-wbs-20260101--20261231--20261119205721.xlsx
 ```
 
 ## Consolidamento dei dati
@@ -210,7 +210,7 @@ Sostituisci i segnaposto come al passo 6.
 Esempio:
 
 ```text
-monitoring-export-2026-01-01--2026-12-31--2026-11-19.xlsx
+monitoring-export-20260101--20261231--20261119205721.xlsx
 ```
 
 Nel nuovo file Excel includi due fogli:
@@ -272,8 +272,8 @@ Al termine dell'elaborazione, riepiloghi a Roberto il nuovo file appena prodotto
 
 Il riepilogo deve indicare almeno:
 
-- Percorso e nome completo del file consolidato generato.
-- Periodo richiesto e confermato, in formato `yyyy-mm-dd`.
+- Percorso e nome completo del file consolidato generato, come hyperlink cliccabile (click o ctrl-click) che apre il file. Usa la sintassi Markdown `[percorso completo](file:///C:/percorso/file.xlsx)`, con barre `/` e gli spazi sostituiti da `%20`.
+- Periodo richiesto e confermato, in formato `yyyyMMdd`.
 - Nome del file delle risorse scaricato e convertito.
 - Nome del file delle WBS scaricato e convertito.
 - Numero di record presenti nel foglio `Risorse`, intestazione esclusa.
