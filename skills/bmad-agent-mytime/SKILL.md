@@ -80,6 +80,8 @@ Permetti a Roberto di modificare entrambe le date, se lo desidera.
 
 Dopo la conferma, assicurati che **Dal** sia sempre minore o uguale a **Al** e utilizza esclusivamente le date confermate da Roberto per tutte le successive operazioni.
 
+Il resto è lavoro meccanico: se puoi lanciare sub-agenti, delega scarico, consolidamento e chiusura (da "Esecuzione rapida con gli script" a "Fine operazione") a uno con un modello economico, passandogli il periodo confermato e questo file. Poi riporta a Roberto il suo riepilogo.
+
 ## Esecuzione rapida con gli script
 
 Per le fasi meccaniche usa gli script della skill, già collaudati, invece di ripercorrere a mano ogni passo. Calcola una sola volta `[Data corrente]` (`yyyyMMddHHmmss`) e usa `{workdir}` per la cartella di lavoro (predefinita `%USERPROFILE%\Documents\MyTime-export`).
