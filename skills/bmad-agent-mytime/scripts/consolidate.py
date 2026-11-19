@@ -49,6 +49,20 @@ def add_data_sheet(excel, wb, source_xlsx, sheet_name, table_name):
     return ws
 
 
+def add_key_columns(table):
+    data = 'IF(ISNUMBER([@Data]),[@Data],DATEVALUE(LEFT(TRIM([@Data]),10)))'
+    keys = [
+        ("K-RISORSA", 'SUBSTITUTE(TRIM([@Utente])," ","#")'),
+        ("K-WBS", "TRIM([@Wbs])"),
+        ("K-DATE", f'TEXT(YEAR({data}),"0000")&TEXT(MONTH({data}),"00")&TEXT(DAY({data}),"00")'),
+        ("K-MONTH", f'TEXT(YEAR({data}),"0000")&TEXT(MONTH({data}),"00")'),
+    ]
+    for position, (name, formula) in enumerate(keys, start=1):
+        column = table.ListColumns.Add(position)
+        column.Name = name
+        column.DataBodyRange.Formula = "=" + formula
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dal", required=True, help="dd/mm/yyyy")
@@ -86,6 +100,8 @@ def main():
         table.QueryTable.CommandType = 2
         table.QueryTable.CommandText = "SELECT * FROM [QueryNormalizzazione]"
         table.QueryTable.Refresh(False)
+
+        add_key_columns(cons.ListObjects(1))
 
         n_risorse = wb.Worksheets("Risorse").ListObjects(1).ListRows.Count
         n_wbs = wb.Worksheets("Wbs").ListObjects(1).ListRows.Count

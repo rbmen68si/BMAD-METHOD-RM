@@ -90,7 +90,7 @@ Per le fasi meccaniche usa gli script della skill, già collaudati, invece di ri
    uv run {skill-root}/scripts/mytime_export.py --dal <dd/mm/yyyy> --al <dd/mm/yyyy> --out {workdir}
    ```
 
-2. Conversione e consolidamento (passi 6 e 9-12). Converte i due `.xls`, crea il consolidato con `TabRisorse`, `TabWbs`, `QueryNormalizzazione` e il foglio `Consuntivazione` in prima posizione, con i nomi finali del passo 6, e stampa percorso e conteggi per il riepilogo:
+2. Conversione e consolidamento (passi 6 e 9-13). Converte i due `.xls`, crea il consolidato con `TabRisorse`, `TabWbs`, `QueryNormalizzazione` e il foglio `Consuntivazione` in prima posizione, con le colonne chiave del passo 13 e i nomi finali del passo 6, e stampa percorso e conteggi per il riepilogo:
 
    ```text
    uv run {skill-root}/scripts/consolidate.py --dal <dd/mm/yyyy> --al <dd/mm/yyyy> --out {workdir} --stamp <Data corrente>
@@ -288,9 +288,24 @@ Crea il foglio in **prima posizione**, in modo che l'ordine finale dei fogli sia
 
 Prima di salvare, verifica i conteggi: `Consuntivazione` deve contenere i record di `Risorse` più quelli di `Wbs` non presenti in `Risorse`.
 
+### 13. Colonne chiave
+
+Subito dopo aver creato il foglio `Consuntivazione` con il contenuto finale, aggiungi alla sua tabella quattro colonne alfanumeriche, inserendole come **prime 4 colonne**, in quest'ordine:
+
+| Colonna | Valore |
+|---|---|
+| `K-RISORSA` | `TRIM` del campo `Utente`, con i blank ripetuti eliminati e i blank rimanenti sostituiti da `#` |
+| `K-WBS` | `TRIM` del campo `Wbs` |
+| `K-DATE` | Data del campo `Data` nel formato `yyyyMMdd` |
+| `K-MONTH` | Data del campo `Data` nel formato `yyyyMM` |
+
+Esempio: `SIGNORETTO MASSIMO` con data `2026-07-01` produce `SIGNORETTO#MASSIMO`, `20260701`, `202607`.
+
+Calcola le colonne con formule di tabella, che usano i nomi inglesi delle funzioni e non dipendono dalla lingua di Excel, e verifica che i conteggi del passo 12 non cambino.
+
 ## Riepilogo finale
 
-### 13. Comunicazione a Roberto
+### 14. Comunicazione a Roberto
 
 Al termine dell'elaborazione, riepiloghi a Roberto il nuovo file appena prodotto.
 
@@ -306,7 +321,7 @@ Il riepilogo deve indicare almeno:
 - Numero di record di `Wbs` duplicati rispetto a `Risorse` e quindi non aggiunti.
 - Eventuali anomalie, avvisi o limitazioni incontrate durante l'operazione.
 
-### 14. Fine operazione
+### 15. Fine operazione
 
 Chiudi il browser che hai avviato (termina il processo Chrome principale che ha `MyTime-export` nella riga di comando, con `Stop-Process -Id`) e rimuovi il profilo dedicato `chrome-profile`, lasciando solo i file Excel e i `.xls` originali.
 
