@@ -98,6 +98,7 @@ Per le fasi meccaniche usa gli script della skill, già collaudati, invece di ri
 
 Se uno script fallisce, esegui a mano i passi descritti sotto per quella fase. Note utili:
 
+- Se `uv` non è installato, crea (previa conferma di Roberto) il virtualenv `{workdir}\.venv`, installa `playwright` e `pywin32` e lancia gli script con `{workdir}\.venv\Scripts\python.exe <script> ...` al posto di `uv run`. Alle esecuzioni successive riusa il virtualenv.
 - Chrome usa la porta di debug `9333`: la `9222` è spesso occupata da Edge. Per cambiarla usa `--port`.
 - Il lancio di Chrome termina subito ma il processo resta attivo.
 - Il form di MyTime ha `select[name=mode]` (`rusr` per Risorse, `rwbs` per WBS), `select[name=view]` (`daily`), `input[name=when]`, `input[name=whento]` e il pulsante `button[name=btnExport]`.
